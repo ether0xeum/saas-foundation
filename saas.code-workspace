@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../SaaS-Foundations"
 		}
 	],
 	"settings": {}
