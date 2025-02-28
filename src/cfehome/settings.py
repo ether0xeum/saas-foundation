@@ -26,17 +26,15 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool, default=True)
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool, default=False)
 
 # 500 errors
-ADMIN_USER_NAME=config("ADMIN_USER_NAME", default="Admin user")
-ADMIN_USER_EMAIL=config("ADMIN_USER_EMAIL", default=None)
+ADMIN_USER_NAME = config("ADMIN_USER_NAME", default="Admin user")
+ADMIN_USER_EMAIL = config("ADMIN_USER_EMAIL", default=None)
 
-MANAGERS=[]
-ADMINS=[]
+MANAGERS = []
+ADMINS = []
 if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
     # 500 errors are emailed to these users
-    ADMINS += [
-        (f"{ADMIN_USER_NAME}", f"{ADMIN_USER_EMAIL}")
-    ]
-    MANAGERS=ADMINS
+    ADMINS += [(f"{ADMIN_USER_NAME}", f"{ADMIN_USER_EMAIL}")]
+    MANAGERS = ADMINS
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -71,6 +69,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
     "widget_tweaks",
 ]
 
@@ -150,23 +149,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Django Allauth Config
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_VERIFICATION="mandatory"
-ACCOUNT_EMAIL_SUBJECT_PREFIX="[CFE] "
-ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[JDLA] "
+ACCOUNT_EMAIL_REQUIRED = True
 
 # ALLAUTH_UI_THEME = "light"
 
 AUTHENTICATION_BACKENDS = [
-    # ...
-    # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
-
-    # `allauth` specific authentication methods, such as login by email
     "allauth.account.auth_backends.AuthenticationBackend",
-    # ...
 ]
 
-SOCIALACCOUNT_PROVIDERS = {}
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        # For each provider, you can choose whether or not the
+        # email address(es) retrieved from the provider are to be
+        # interpreted as verified.
+        "VERIFIED_EMAIL": True
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
